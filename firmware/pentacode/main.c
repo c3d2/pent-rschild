@@ -7,6 +7,28 @@
 #include "main.h"
 #include "pins.h"
 
+
+typedef void (*AppPtr_t)(void) __attribute__ ((noreturn));
+
+uint8_t (*aniTick_fp[MAX_NUMBER_OF_ANIMATIONS])(void);
+uint16_t aniInterval_count[MAX_NUMBER_OF_ANIMATIONS];
+uint16_t aniInterval_duration[MAX_NUMBER_OF_ANIMATIONS];
+
+uint8_t animations = 0;
+
+void registerAnimation(uint8_t (*fp)(void),uint16_t tickInterval, uint16_t intervals)
+{
+	if(animations < MAX_NUMBER_OF_ANIMATIONS)
+	{
+		aniTick_fp[animations] = fp;
+		aniInterval_count[animations]=intervals;
+		aniInterval_duration[animations]=tickInterval;
+	
+		animations++;
+	}
+}
+
+
 //these variables are used by the timer intr
 static uint8_t row_step = 0;
 static uint8_t rowbyte_portc[12] = {~0,~0,~0,~0,~0 ,~0 ,~1,~2,~4,~8,~16,~32};
@@ -88,22 +110,32 @@ int main(void)
 	OCR1A = 0xff;
 	
 	sei();
-	
+
 	setLedAll(0);
 
-	uint8_t x,y;
 
+	uint8_t current_animation = 0;
+	uint16_t current_ani_tick = 0;
+	
 	while(1)
 	{
-		for(x = 0; x < 12;x++)
+
+		if(current_ani_tick >= aniInterval_count[current_animation])
 		{
-			for(y = 0;y < 8;y++)
+			current_ani_tick=0;
+			current_animation++;
+			if(current_animation == animations)
 			{
-				setLedAll(0);
-				setLedXY(x,y,1);
-				_delay_ms(10);
+				current_animation = 0;
 			}
+			setLedAll(0);
 		}
+	
+		(*aniTick_fp[current_animation])();
+
+		current_ani_tick++;
+
+		_delay_ms(aniInterval_duration[current_animation]);
 	}
 
 }

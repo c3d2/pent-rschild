@@ -19,7 +19,7 @@ endif
 
 #########################################################################
 
-SRC=$(wildcard *.c)
+SRC=$(wildcard *.c apps/*.c)
 OBJECTS=$(SRC:.c=.o) 
 DFILES=$(SRC:.c=.d) 
 HEADERS=$(wildcard *.h)
