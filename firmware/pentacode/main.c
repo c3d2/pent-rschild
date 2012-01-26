@@ -33,7 +33,7 @@ void registerAnimation(uint8_t (*fp)(void),uint16_t tickInterval, uint16_t inter
 static uint8_t row_step = 0;
 static uint8_t rowbyte_portc[12] = {~0,~0,~0,~0,~0 ,~0 ,~1,~2,~4,~8,~16,~32};
 static uint8_t rowbyte_portb[12] = {~1,~2,~4,~8,~16,~32,~0,~0,~0,~0,~0 ,~0 };
-static volatile uint8_t colbyte_portd[12]={
+volatile uint8_t colbyte_portd[12]={
 							0,0,0,0,0,0,0,0,0,0,0,0
 						};
 
