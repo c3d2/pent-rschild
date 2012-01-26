@@ -5,48 +5,60 @@
 
 #define COL0_PORT PORTD
 #define COL1_PORT PORTD
-#define COL2_PORT PORTB
-#define COL3_PORT PORTB
-#define COL4_PORT PORTB
-#define COL5_PORT PORTB
-#define COL6_PORT PORTB
-#define COL7_PORT PORTB
+#define COL2_PORT PORTD
+#define COL3_PORT PORTD
+#define COL4_PORT PORTD
+#define COL5_PORT PORTD
+#define COL6_PORT PORTD
+#define COL7_PORT PORTD
+#define COL8_PORT PORTD
+#define COL9_PORT PORTD
+#define COL10_PORT PORTD
+#define COL11_PORT PORTD
  
-#define ROW0_PORT PORTC
-#define ROW1_PORT PORTC
-#define ROW2_PORT PORTC
-#define ROW3_PORT PORTC
-#define ROW4_PORT PORTC
-#define ROW5_PORT PORTC
+#define ROW0_PORT PORTD
+#define ROW1_PORT PORTD
+#define ROW2_PORT PORTD
+#define ROW3_PORT PORTD
+#define ROW4_PORT PORTD
+#define ROW5_PORT PORTD
 #define ROW6_PORT PORTD
 #define ROW7_PORT PORTD
 
-#define COL0_DDR DDRD
-#define COL1_DDR DDRD
+#define COL0_DDR DDRB
+#define COL1_DDR DDRB
 #define COL2_DDR DDRB
 #define COL3_DDR DDRB
 #define COL4_DDR DDRB
 #define COL5_DDR DDRB
-#define COL6_DDR DDRB
-#define COL7_DDR DDRB
+#define COL6_DDR DDRC
+#define COL7_DDR DDRC
+#define COL8_DDR DDRC
+#define COL9_DDR DDRC
+#define COL10_DDR DDRC
+#define COL11_DDR DDRC
  
-#define ROW0_DDR DDRC
-#define ROW1_DDR DDRC
-#define ROW2_DDR DDRC
-#define ROW3_DDR DDRC
-#define ROW4_DDR DDRC
-#define ROW5_DDR DDRC
+#define ROW0_DDR DDRD
+#define ROW1_DDR DDRD
+#define ROW2_DDR DDRD
+#define ROW3_DDR DDRD
+#define ROW4_DDR DDRD
+#define ROW5_DDR DDRD
 #define ROW6_DDR DDRD
 #define ROW7_DDR DDRD
 
-#define COL0_PIN PIND6
-#define COL1_PIN PIND7
-#define COL2_PIN PINB0
-#define COL3_PIN PINB1
-#define COL4_PIN PINB2
-#define COL5_PIN PINB3
-#define COL6_PIN PINB4
-#define COL7_PIN PINB5
+#define COL0_PIN PIND0
+#define COL1_PIN PIND1
+#define COL2_PIN PINB2
+#define COL3_PIN PINB3
+#define COL4_PIN PINB4
+#define COL5_PIN PINB5
+#define COL6_PIN PINB0
+#define COL7_PIN PINB1
+#define COL8_PIN PINB2
+#define COL9_PIN PINB3
+#define COL10_PIN PINB4
+#define COL11_PIN PINB5
  
 #define ROW0_PIN PINC0
 #define ROW1_PIN PINC1
@@ -54,8 +66,8 @@
 #define ROW3_PIN PINC3
 #define ROW4_PIN PINC4
 #define ROW5_PIN PINC5
-#define ROW6_PIN PIND2
-#define ROW7_PIN PIND3
+#define ROW6_PIN PIND6
+#define ROW7_PIN PIND7
 
 #define ROW0_OFF ROW0_PORT |= (1<<ROW0_PIN)
 #define ROW1_OFF ROW1_PORT |= (1<<ROW1_PIN)
@@ -83,6 +95,10 @@
 #define COL5_ON COL5_PORT |= (1<<COL5_PIN)
 #define COL6_ON COL6_PORT |= (1<<COL6_PIN)
 #define COL7_ON COL7_PORT |= (1<<COL7_PIN)
+#define COL8_ON COL8_PORT |= (1<<COL8_PIN)
+#define COL9_ON COL9_PORT |= (1<<COL9_PIN)
+#define COL10_ON COL10_PORT |= (1<<COL10_PIN)
+#define COL11_ON COL11_PORT |= (1<<COL11_PIN)
 
 #define COL0_OFF COL0_PORT &= ~(1<<COL0_PIN)
 #define COL1_OFF COL1_PORT &= ~(1<<COL1_PIN)
@@ -92,6 +108,10 @@
 #define COL5_OFF COL5_PORT &= ~(1<<COL5_PIN)
 #define COL6_OFF COL6_PORT &= ~(1<<COL6_PIN)
 #define COL7_OFF COL7_PORT &= ~(1<<COL7_PIN)
+#define COL8_OFF COL8_PORT &= ~(1<<COL8_PIN)
+#define COL9_OFF COL9_PORT &= ~(1<<COL9_PIN)
+#define COL10_OFF COL10_PORT &= ~(1<<COL10_PIN)
+#define COL11_OFF COL11_PORT &= ~(1<<COL11_PIN)
 
 
 #endif
