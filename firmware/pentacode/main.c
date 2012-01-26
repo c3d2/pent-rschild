@@ -7,46 +7,18 @@
 #include "main.h"
 #include "pins.h"
 
-
-
-
-
 //these variables are used by the timer intr
-uint8_t row_step = 0;
-
-uint8_t rowbyte_portc[12] = {0,0,0,0,0 ,0 ,1,2,4,8,16,32};
-uint8_t rowbyte_portb[12] = {1,2,4,8,16,32,0,0,0,0,0 ,0 };
-
-uint8_t colbyte_portb[128]={
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							};
-
-uint8_t colbyte_portd[128]={
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-							};
-
-
-uint8_t frame_buffer[32];
-
+static uint8_t row_step = 0;
+static uint8_t rowbyte_portc[12] = {~0,~0,~0,~0,~0 ,~0 ,~1,~2,~4,~8,~16,~32};
+static uint8_t rowbyte_portb[12] = {~1,~2,~4,~8,~16,~32,~0,~0,~0,~0,~0 ,~0 };
+static volatile uint8_t colbyte_portd[12]={
+							0,0,0,0,0,0,0,0,0,0,0,0
+						};
 
 ISR (TIMER1_OVF_vect)
 {
 	row_step++;
-	if(row_step==13)
+	if(row_step==12)
 	{
 		row_step = 0;
 	}
@@ -54,9 +26,9 @@ ISR (TIMER1_OVF_vect)
 	PORTD = 0;
 
 	PORTC = rowbyte_portc[row_step];
-	PORTB = rowbyte_portc[row_step];
+	PORTB = rowbyte_portb[row_step];
 
-	PORTD = row_step;
+	PORTD = colbyte_portd[row_step];
 
 }
 
@@ -113,75 +85,47 @@ int main(void)
 	TCCR1A |= (1<<WGM10)|(1<<WGM11);
 	TCCR1B |= (1<<WGM12)|(1<<WGM13)|(1<<CS10);
 	TIMSK1 |= (1<<TOIE1);
-	OCR1A = 0x50;
+	OCR1A = 0xff;
 	
 	sei();
 	
 	setLedAll(0);
 
+	uint8_t x,y;
 
-	setLedXY(5,5,1);
+	while(1)
+	{
+		for(x = 0; x < 12;x++)
+		{
+			for(y = 0;y < 8;y++)
+			{
+				setLedAll(0);
+				setLedXY(x,y,1);
+				_delay_ms(10);
+			}
+		}
+	}
+
 }
 
 
 void setLedXY(uint8_t x,uint8_t y, uint8_t brightness)
 {
-	if(y > 1)
+	if(brightness == 0)
 	{
-		for(uint8_t i = 0;i < 15;i++)
-		{
-			if(brightness > i)
-			{
-				colbyte_portb[x*16+i]|=(1<<(y-2));
-			}
-			else
-			{
-				colbyte_portb[x*16+i]&=~(1<<(y-2));
-			}
-		}
+		colbyte_portd[x] &= ~(1<<y);
 	}
 	else
 	{
-		for(uint8_t i = 0;i < 15;i++)
-		{
-			if(brightness > i)
-			{
-				colbyte_portd[x*16+i]|=(1<<(y+6));
-			}
-			else
-			{
-				colbyte_portd[x*16+i]&=~(1<<(y+6));
-			}
-		}
+		colbyte_portd[x] |= (1<<y);
 	}
 }
 
 void setLedAll(uint8_t brightness)
 {
-	for(uint8_t x = 0;x<8;x++)
+	for(uint8_t i = 0;i < 12;i++)
 	{
-		for(uint8_t i = 0;i < 15;i++)
-		{
-			if(brightness > i)
-			{
-				colbyte_portb[x*16+i] = 63;
-			}
-			else
-			{
-				colbyte_portb[x*16+i] = 0;
-			}
-		}
-		for(uint8_t i = 0;i < 15;i++)
-		{
-			if(brightness > i)
-			{
-				colbyte_portd[x*16+i]=192;
-			}
-			else
-			{
-				colbyte_portd[x*16+i]=0;
-			}
-		}
+		colbyte_portd[i] = brightness * 0xff;
 	}
 }
 
