@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 		int x, y;
 		for(x = 0; x < LED_WIDTH; x++) {
 			for(y = 0; y < LED_HEIGHT; y++) {
-				Draw_FillCircle(screen, ZOOM_X*x+(ZOOM_X/2),ZOOM_Y*(LED_HEIGHT - y - 1)+(ZOOM_Y/2), (ZOOM_Y*0.4),color[leds[y][x]]);
+				Draw_FillCircle(screen, ZOOM_X*x+(ZOOM_X/2),ZOOM_Y*y+(ZOOM_Y/2), (ZOOM_Y*0.4),color[leds[y][x]]);
 			}
 		}
 		SDL_Flip(screen);
