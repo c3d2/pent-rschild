@@ -33,7 +33,7 @@ LDFLAGS = -mmcu=$(MCU)
 #  Compiler Paths
 GCC = avr-gcc
 REMOVE = rm -f
-SIZE = avr-size
+SIZE = avr-size --mcu=$(MCU) --format=avr
 OBJCOPY = avr-objcopy
 
 #########################################################################
