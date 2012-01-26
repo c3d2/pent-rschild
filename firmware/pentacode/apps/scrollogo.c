@@ -32,7 +32,7 @@ static uint8_t tick_scroll(void);
 
 void init_scroll(void)
 {
-	registerAnimation(tick_scroll, 150, 48);
+	registerAnimation(tick_scroll, 50, 48);
 }
 
 uint8_t tick_scroll()
